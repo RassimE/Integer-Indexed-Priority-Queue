@@ -1,0 +1,24 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+*.cache
+*.json
+*.dll
+/obj/Debug/net8.0-windows/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+*.exe
+/obj/Debug/net8.0-windows/IntegerIndexedPriorityQueue.AssemblyInfo.cs
+*.pdb
+*.bin
+/obj/Debug/net8.0-windows/IntegerIndexedPriorityQueue.csproj.BuildWithSkipAnalyzers
+/obj/Debug/net8.0-windows/IntegerIndexedPriorityQueue.csproj.FileListAbsolute.txt
+/obj/Debug/net8.0-windows/IntegerIndexedPriorityQueue.GeneratedMSBuildEditorConfig.editorconfig
+/obj/Debug/net8.0-windows/IntegerIndexedPriorityQueue.GlobalUsings.g.cs
+/obj/Debug/net8.0-windows/IntegerIndexedPriorityQueue.MainForm.resources
+/obj/IntegerIndexedPriorityQueue.csproj.nuget.g.props
+/obj/IntegerIndexedPriorityQueue.csproj.nuget.g.targets
+/.vs/Integer-Indexed-Priority-Queue/v17/.wsuo
+/.vs/IntegerIndexedPriorityQueue/CopilotIndices/17.14.1713.63837
+/.vs/IntegerIndexedPriorityQueue/DesignTimeBuild
+/.vs/IntegerIndexedPriorityQueue/FileContentIndex
+/.vs/IntegerIndexedPriorityQueue/v17

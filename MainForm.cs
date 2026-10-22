@@ -154,7 +154,7 @@ namespace IntegerIndexedPriorityQueue
 				return;
 			DisplayListBox.Items.Clear();
 
-			if (radioButton2.Checked)//Wartime
+			if (rbWartime.Checked)//Wartime
 			{
 				// SITUATION: The AI's city is under attack by enemies!
 				DisplayString($"Wartime");
@@ -162,7 +162,7 @@ namespace IntegerIndexedPriorityQueue
 				// Here, however, we can instantly change the priority of any element to the highest (0) in O(log n) time.
 				ChangeTaskPriorities(4, WartimePriorities);
 			}
-			else if (radioButton1.Checked)//Peacetime
+			else if (rbPeasetime.Checked)//Peacetime
 			{
 				// SITUATION: War ended.
 				DisplayString($"Peacetime");

@@ -30,8 +30,8 @@
 		{
 			DisplayListBox = new ListBox();
 			groupBox1 = new GroupBox();
-			radioButton2 = new RadioButton();
-			radioButton1 = new RadioButton();
+			rbWartime = new RadioButton();
+			rbPeasetime = new RadioButton();
 			groupBox1.SuspendLayout();
 			SuspendLayout();
 			// 
@@ -46,8 +46,8 @@
 			// 
 			// groupBox1
 			// 
-			groupBox1.Controls.Add(radioButton2);
-			groupBox1.Controls.Add(radioButton1);
+			groupBox1.Controls.Add(rbWartime);
+			groupBox1.Controls.Add(rbPeasetime);
 			groupBox1.Location = new Point(12, 12);
 			groupBox1.Name = "groupBox1";
 			groupBox1.Size = new Size(129, 86);
@@ -55,29 +55,29 @@
 			groupBox1.TabStop = false;
 			groupBox1.Text = "Situation";
 			// 
-			// radioButton2
+			// rbWartime
 			// 
-			radioButton2.AutoSize = true;
-			radioButton2.Location = new Point(6, 61);
-			radioButton2.Name = "radioButton2";
-			radioButton2.Size = new Size(70, 19);
-			radioButton2.TabIndex = 1;
-			radioButton2.Text = "Wartime";
-			radioButton2.UseVisualStyleBackColor = true;
-			radioButton2.CheckedChanged += Situation_CheckedChanged;
+			rbWartime.AutoSize = true;
+			rbWartime.Location = new Point(6, 61);
+			rbWartime.Name = "rbWartime";
+			rbWartime.Size = new Size(70, 19);
+			rbWartime.TabIndex = 1;
+			rbWartime.Text = "Wartime";
+			rbWartime.UseVisualStyleBackColor = true;
+			rbWartime.CheckedChanged += Situation_CheckedChanged;
 			// 
-			// radioButton1
+			// rbPeasetime
 			// 
-			radioButton1.AutoSize = true;
-			radioButton1.Checked = true;
-			radioButton1.Location = new Point(6, 22);
-			radioButton1.Name = "radioButton1";
-			radioButton1.Size = new Size(80, 19);
-			radioButton1.TabIndex = 0;
-			radioButton1.TabStop = true;
-			radioButton1.Text = "Peacetime";
-			radioButton1.UseVisualStyleBackColor = true;
-			radioButton1.CheckedChanged += Situation_CheckedChanged;
+			rbPeasetime.AutoSize = true;
+			rbPeasetime.Checked = true;
+			rbPeasetime.Location = new Point(6, 22);
+			rbPeasetime.Name = "rbPeasetime";
+			rbPeasetime.Size = new Size(80, 19);
+			rbPeasetime.TabIndex = 0;
+			rbPeasetime.TabStop = true;
+			rbPeasetime.Text = "Peacetime";
+			rbPeasetime.UseVisualStyleBackColor = true;
+			rbPeasetime.CheckedChanged += Situation_CheckedChanged;
 			// 
 			// MainForm
 			// 
@@ -98,7 +98,7 @@
 		#endregion
 		private ListBox DisplayListBox;
 		private GroupBox groupBox1;
-		private RadioButton radioButton2;
-		private RadioButton radioButton1;
+		private RadioButton rbWartime;
+		private RadioButton rbPeasetime;
 	}
 }
