@@ -148,7 +148,7 @@ namespace IntegerIndexedPriorityQueue
 			}
 		}
 
-		private void Sitiation_CheckedChanged(object sender, EventArgs e)
+		private void Situation_CheckedChanged(object sender, EventArgs e)
 		{
 			if (!((RadioButton)sender).Checked)
 				return;

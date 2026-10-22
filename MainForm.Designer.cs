@@ -64,7 +64,7 @@
 			radioButton2.TabIndex = 1;
 			radioButton2.Text = "Wartime";
 			radioButton2.UseVisualStyleBackColor = true;
-			radioButton2.CheckedChanged += Sitiation_CheckedChanged;
+			radioButton2.CheckedChanged += Situation_CheckedChanged;
 			// 
 			// radioButton1
 			// 
@@ -77,7 +77,7 @@
 			radioButton1.TabStop = true;
 			radioButton1.Text = "Peacetime";
 			radioButton1.UseVisualStyleBackColor = true;
-			radioButton1.CheckedChanged += Sitiation_CheckedChanged;
+			radioButton1.CheckedChanged += Situation_CheckedChanged;
 			// 
 			// MainForm
 			// 
