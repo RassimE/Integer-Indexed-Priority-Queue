@@ -64,7 +64,7 @@
 			rbWartime.TabIndex = 1;
 			rbWartime.Text = "Wartime";
 			rbWartime.UseVisualStyleBackColor = true;
-			rbWartime.CheckedChanged += Situation_CheckedChanged;
+			rbWartime.CheckedChanged += Situation_Changed;
 			// 
 			// rbPeasetime
 			// 
@@ -77,7 +77,7 @@
 			rbPeasetime.TabStop = true;
 			rbPeasetime.Text = "Peacetime";
 			rbPeasetime.UseVisualStyleBackColor = true;
-			rbPeasetime.CheckedChanged += Situation_CheckedChanged;
+			rbPeasetime.CheckedChanged += Situation_Changed;
 			// 
 			// MainForm
 			// 

@@ -3,11 +3,12 @@ namespace IntegerIndexedPriorityQueue
 {
 	public class HeapItem
 	{
-		virtual public object Data { get; set; }
+		/// Gets or sets the priority of the heap item (lower value = higher priority).
+		public object Priority { get; set; }
 		public int index { get; set; }
-		public HeapItem(object item = null)
+		public HeapItem(object priority)
 		{
-			Data = item;
+			Priority = priority;
 			index = -1;
 		}
 	}
@@ -23,12 +24,12 @@ namespace IntegerIndexedPriorityQueue
 		protected int _n;                       // current size of the heap.
 		protected int _max;                     // max. size of the heap.
 		protected HeapItem[] _heap;            // Item of the heap.
-		private readonly Comparison<HeapItem> _comparison;
-		
+		private readonly Comparison<object> _comparison;
+
 		public int n { get { return _n; } }
 		public int max { get { return _max; } }
 
-		public IndexedPriorityQueue(Comparison<HeapItem> comparison, int max = 64)
+		public IndexedPriorityQueue(Comparison<object> comparison, int max = 64)
 		{
 			if (max <= 0)
 				max = 64;
@@ -54,7 +55,7 @@ namespace IntegerIndexedPriorityQueue
 
 		public int Count { get { return _n; } }
 
-		public HeapItem this[int i]
+		public HeapItem? this[int i]
 		{
 			get
 			{
@@ -65,13 +66,17 @@ namespace IntegerIndexedPriorityQueue
 			}
 		}
 
-		public bool Add(HeapItem Value)
+		public bool Add(HeapItem item, object newpriority)
 		{
-			int i = Value.index;
+			int i = item.index;
+
 			if (i >= 0)
 			{
-				if (_comparison(_heap[i], Value) <= 0)
-					return IncreaseKey(Value);
+				if (_comparison(_heap[i].Priority, newpriority) <= 0)
+				{
+					item.Priority = newpriority;
+					return IncreaseKey(item);
+				}
 			}
 			else
 				i = _n++;
@@ -85,7 +90,7 @@ namespace IntegerIndexedPriorityQueue
 			while (i > 0)
 			{
 				int j = (i - 1) >> 1;
-				if (_comparison(Value, _heap[j]) < 0)
+				if (_comparison(item.Priority, _heap[j].Priority) < 0)
 				{
 					_heap[i] = _heap[j];
 					_heap[i].index = i;
@@ -96,25 +101,26 @@ namespace IntegerIndexedPriorityQueue
 			}
 
 			//	Insert the new Item at the insertion point found.
-			Value.index = i;
-			_heap[i] = Value;
+			item.index = i;
+			item.Priority = newpriority;
+			_heap[i] = item;
 			return true;
 		}
 
-		public bool IncreaseKey(HeapItem Value)
+		public bool IncreaseKey(HeapItem item)
 		{
-			int i = Value.index, t = _n - 1;
+			int i = item.index, t = _n - 1;
 			int j = i + 1;
 			while (j <= t)
 			{
 				//	Right(i) = Left(i) + 1
 				if (j < t)
-					if (_comparison(_heap[j], _heap[j + 1]) > 0)
+					if (_comparison(_heap[j].Priority, _heap[j + 1].Priority) > 0)
 						j++;
 
 				HeapItem jVal = _heap[j];
 
-				if (_comparison(jVal, Value) > 0)
+				if (_comparison(jVal.Priority, item.Priority) > 0)
 					break;
 
 				_heap[i] = jVal;
@@ -125,21 +131,21 @@ namespace IntegerIndexedPriorityQueue
 			}
 
 			// Insert the last in the correct place in the heap.
-			_heap[i] = Value;
+			_heap[i] = item;
 			_heap[i].index = i;
 
 
 			return true;
 		}
-		//Left(i) = 2 * i + 1.
+		//Left(i) = 2 * i + 1.	
 		//Right(i) = 2 * i + 2 => Left(i) + 1
-		public bool Get(out HeapItem Value)
+		public bool Get(out HeapItem? item)
 		{
-			Value = default;
+			item = default;
 			if (_n == 0)
 				return false;
 
-			Value = _heap[0];
+			item = _heap[0];
 			_n--;
 
 			if (_n > 0)
@@ -152,12 +158,12 @@ namespace IntegerIndexedPriorityQueue
 				{
 					//	Right(i) = Left(i) + 1
 					if (j < t)
-						if (_comparison(_heap[j], _heap[j + 1]) > 0)
+						if (_comparison(_heap[j].Priority, _heap[j + 1].Priority) > 0)
 							j++;
 
 					HeapItem jVal = _heap[j];
 
-					if (_comparison(jVal, last) > 0)
+					if (_comparison(jVal.Priority, last.Priority) > 0)
 						break;
 
 					_heap[i] = jVal;
@@ -172,7 +178,7 @@ namespace IntegerIndexedPriorityQueue
 				_heap[i].index = i;
 
 			}
-			Value.index = -1;
+			item.index = -1;
 			return true;
 		}
 
@@ -189,19 +195,19 @@ namespace IntegerIndexedPriorityQueue
 		/// <summary>
 		/// Add Synonyms
 		/// </summary>
-		public bool Put(HeapItem Value)
+		public bool Put(HeapItem item, object priority)
 		{
-			return Add(Value);
+			return Add(item, priority);
 		}
 
-		public bool Push(HeapItem Value)
+		public bool Push(HeapItem item, object priority)
 		{
-			return Add(Value);
+			return Add(item, priority);
 		}
 
-		public bool Insert(HeapItem Value)
+		public bool Insert(HeapItem item, object priority)
 		{
-			return Add(Value);
+			return Add(item, priority);
 		}
 
 		/// <summary>
@@ -210,26 +216,26 @@ namespace IntegerIndexedPriorityQueue
 		/// the priority queue, depending on the comparison function.
 		/// </summary>
 
-		public bool Pop(out HeapItem Value)
+		public bool Pop(out HeapItem? item)
 		{
-			return Get(out Value);
+			return Get(out item);
 		}
 
 		//public bool ExtractMax(out HeapItem Value)
-		public bool ExtractMin(out HeapItem Value)
+		public bool ExtractMin(out HeapItem? item)
 		{
-			return Get(out Value);
+			return Get(out item);
 		}
 		/// <summary>
 		/// Peek Synonym
 		/// </summary>
-		public bool Top(out HeapItem Value)
+		public bool Top(out HeapItem? item)
 		{
-			Value = default;
+			item = default;
 			if (_n == 0)
 				return false;
 
-			Value = _heap[0];
+			item = _heap[0];
 			return true;
 		}
 	}
