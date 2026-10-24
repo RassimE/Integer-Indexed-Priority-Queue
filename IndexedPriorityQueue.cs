@@ -3,9 +3,19 @@ namespace IntegerIndexedPriorityQueue
 {
 	public class HeapItem
 	{
-		/// Gets or sets the priority of the heap item (lower value = higher priority).
+		/// <summary>
+		/// Any ordinal typed object gets or sets the priority of the heap item (lower value = higher priority).
+		/// </summary>
 		public object Priority { get; set; }
+		/// <summary>
+		/// Gets or sets the index of the heap item in the heap items array.
+		/// </summary>
 		public int index { get; set; }
+
+		/// <summary>
+		/// Initializes a new instance of the HeapItem class.
+		/// </summary>
+		/// <param name="priority">Initial priority of this item</param>	
 		public HeapItem(object priority)
 		{
 			Priority = priority;
@@ -14,21 +24,43 @@ namespace IntegerIndexedPriorityQueue
 	}
 
 	/// <summary>
-	/// Minimum priority queue
+	/// Minimum (or maximum depending on the <see cref="_comparison"> comparison method) priority queue
 	/// binary heap width optimized "decrease-key" and "increase-key" operations
 	/// based on TIPQ class by Rassim Eminli
 	/// (http://c-evo.org/files/download.php?remi.remi.zip)
 	/// </summary>
 	internal class IndexedPriorityQueue
 	{
-		protected int _n;                       // current size of the heap.
-		protected int _max;                     // max. size of the heap.
-		protected HeapItem[] _heap;            // Item of the heap.
+		/// <summary>
+		/// Current size of the heap.
+		/// </summary>
+		protected int _n;
+		/// <summary>
+		/// Maximum size of the heap.
+		/// </summary>
+		protected int _max;
+		/// <summary>
+		/// Array to store the heap items.
+		/// </summary>
+		protected HeapItem[] _heap;
+		/// <summary>
+		/// Comparison function to determine the priority of heap items.
+		/// </summary>
 		private readonly Comparison<object> _comparison;
-
+		/// <summary>
+		/// Gets the current size of the heap.
+		/// </summary>
 		public int n { get { return _n; } }
+		/// <summary>
+		/// Gets the maximum size of the heap.
+		/// </summary>
 		public int max { get { return _max; } }
 
+		/// <summary>
+		/// Initializes a new instance of the IndexedPriorityQueue class.
+		/// </summary>
+		/// <param name="comparison">Comparison function to determine the priority of heap items.</param>
+		/// <param name="max">Maximum size of the heap.</param>
 		public IndexedPriorityQueue(Comparison<object> comparison, int max = 64)
 		{
 			if (max <= 0)
@@ -38,6 +70,10 @@ namespace IntegerIndexedPriorityQueue
 			_comparison = comparison;
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the IndexedPriorityQueue class by copying another instance.
+		/// </summary>
+		/// <param name="other">The IndexedPriorityQueue instance to copy.</param>
 		public IndexedPriorityQueue(IndexedPriorityQueue other)
 		{
 			_max = other._max;
@@ -66,15 +102,15 @@ namespace IntegerIndexedPriorityQueue
 			}
 		}
 
-		public bool Add(HeapItem item, object newpriority)
+		public bool Add(HeapItem item, object priority)
 		{
 			int i = item.index;
 
 			if (i >= 0)
 			{
-				if (_comparison(_heap[i].Priority, newpriority) <= 0)
+				if (_comparison(_heap[i].Priority, priority) <= 0)
 				{
-					item.Priority = newpriority;
+					item.Priority = priority;
 					return IncreaseKey(item);
 				}
 			}
@@ -100,9 +136,11 @@ namespace IntegerIndexedPriorityQueue
 					break;
 			}
 
-			//	Insert the new Item at the insertion point found.
+			// Correct the index of the item in the heap array
 			item.index = i;
-			item.Priority = newpriority;
+			//	Set the priority of the item to the new value.
+			item.Priority = priority;
+			//	Insert the new Item at the insertion point found.
 			_heap[i] = item;
 			return true;
 		}
