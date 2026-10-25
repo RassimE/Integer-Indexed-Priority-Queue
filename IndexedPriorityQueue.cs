@@ -109,10 +109,7 @@ namespace IntegerIndexedPriorityQueue
 			if (i >= 0)
 			{
 				if (_comparison(_heap[i].Priority, priority) <= 0)
-				{
-					item.Priority = priority;
-					return IncreaseKey(item);
-				}
+					return IncreaseKey(item, priority);
 			}
 			else
 				i = _n++;
@@ -145,7 +142,7 @@ namespace IntegerIndexedPriorityQueue
 			return true;
 		}
 
-		public bool IncreaseKey(HeapItem item)
+		public bool IncreaseKey(HeapItem item, object priority)
 		{
 			int i = item.index, t = _n - 1;
 			int j = i + 1;
@@ -168,10 +165,12 @@ namespace IntegerIndexedPriorityQueue
 				j = (i << 1) + 1;
 			}
 
-			// Insert the last in the correct place in the heap.
+			// Correct the index of the item in the heap array
+			item.index = i;
+			//	Set the priority of the item to the new value.
+			item.Priority = priority;
+			//	Insert the new Item at the insertion point found.
 			_heap[i] = item;
-			_heap[i].index = i;
-
 
 			return true;
 		}
