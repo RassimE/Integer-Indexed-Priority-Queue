@@ -83,14 +83,25 @@ namespace IntegerIndexedPriorityQueue
 			_comparison = other._comparison;
 		}
 
+		/// <summary>
+		/// Clears all items from the priority queue.
+		/// </summary>
 		public void Clear()
 		{
 			Array.Clear(_heap, 0, _heap.Length);
 			_n = 0;
 		}
 
+		/// <summary>
+		/// Gets the number of items in the priority queue.
+		/// </summary>
 		public int Count { get { return _n; } }
 
+		/// <summary>
+		/// Gets the heap item at the specified index.
+		/// </summary>
+		/// <param name="i">The index of the heap item to get.</param>
+		/// <returns>The heap item at the specified index, or null if the index is out of range.</returns>
 		public HeapItem? this[int i]
 		{
 			get
@@ -102,13 +113,19 @@ namespace IntegerIndexedPriorityQueue
 			}
 		}
 
+		/// <summary>
+		/// Adds a heap item to the priority queue with the specified priority.
+		/// </summary>
+		/// <param name="item">The heap item to add.</param>
+		/// <param name="priority">The priority of the heap item.</param>
+		/// <returns>True if the item was added successfully; otherwise, false.</returns>
 		public bool Add(HeapItem item, object priority)
 		{
 			int i = item.index;
 
 			if (i >= 0)
 			{
-				if (_comparison(_heap[i].Priority, priority) <= 0)
+				if (_comparison(item.Priority, priority) <= 0)
 					return IncreaseKey(item, priority);
 			}
 			else
@@ -141,11 +158,16 @@ namespace IntegerIndexedPriorityQueue
 			_heap[i] = item;
 			return true;
 		}
-
+		/// <summary>
+		/// Increases the priority of a heap item in the priority queue.
+		/// </summary>
+		/// <param name="item">The heap item whose priority is to be increased.</param>
+		/// <param name="priority">The new priority of the heap item.</param>
+		/// <returns>True if the priority was increased successfully; otherwise, false.</returns>
 		public bool IncreaseKey(HeapItem item, object priority)
 		{
-			int i = item.index, t = _n - 1;
-			int j = i + 1;
+			int i = item.index, t = _n - 1; // top item index
+			int j = i + 1;                  // next item index
 			while (j <= t)
 			{
 				//	Right(i) = Left(i) + 1
@@ -176,6 +198,13 @@ namespace IntegerIndexedPriorityQueue
 		}
 		//Left(i) = 2 * i + 1.	
 		//Right(i) = 2 * i + 2 => Left(i) + 1
+
+		/// <summary>
+		/// Retrieves the element with the highest(or lowest — depending on the comparison function)
+		// priority from a priority queue and removes it.
+		/// </summary>
+		/// <param name="item">When this method returns, contains the heap item with the highest priority, or null if the priority queue is empty.</param>
+		/// <returns>True if a heap item was successfully retrieved and removed; otherwise, false.</returns>
 		public bool Get(out HeapItem? item)
 		{
 			item = default;
@@ -219,6 +248,11 @@ namespace IntegerIndexedPriorityQueue
 			return true;
 		}
 
+		/// <summary>
+		/// Gets the heap item with the highest priority without removing it from the priority queue.
+		/// </summary>
+		/// <param name="Value">When this method returns, contains the heap item with the highest priority, or null if the priority queue is empty.</param>
+		/// <returns>True if a heap item was successfully retrieved; otherwise, false.	</returns>
 		public bool Peek(out HeapItem Value)
 		{
 			Value = default;
