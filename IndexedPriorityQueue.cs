@@ -123,24 +123,28 @@ namespace IntegerIndexedPriorityQueue
 		{
 			int i = item.index;
 
-			if (i >= 0)
+			if (i >= 0) //Check whether the element is already in the queue;
 			{
+				//if it is, increase its priority, provided that the new priority is higher(i.e., its value is lower).
 				if (_comparison(item.Priority, priority) <= 0)
 					return IncreaseKey(item, priority);
+				//Otherwise, the item's new value is higher — add it with a new priority as usual.
 			}
-			else
+			else //item is not in queue, then add it
 				i = _n++;
 
+			// If the heap is full, resize it to accommodate more items.
 			if (_n >= _max)
 			{
 				_max += _max;
 				Array.Resize(ref _heap, _max);
 			}
 
+			// Move the new item up the heap until it is in the correct position.
 			while (i > 0)
 			{
 				int j = (i - 1) >> 1;
-				if (_comparison(item.Priority, _heap[j].Priority) < 0)
+				if (_comparison(priority, _heap[j].Priority) < 0)
 				{
 					_heap[i] = _heap[j];
 					_heap[i].index = i;
@@ -166,8 +170,11 @@ namespace IntegerIndexedPriorityQueue
 		/// <returns>True if the priority was increased successfully; otherwise, false.</returns>
 		public bool IncreaseKey(HeapItem item, object priority)
 		{
-			int i = item.index, t = _n - 1; // top item index
-			int j = i + 1;                  // next item index
+			int i = item.index;             // index of the item in the heap array
+			int t = _n - 1;                 // index of the last item in the heap array
+			int j = i + 1;                  // index of the right child of the item in the heap array
+
+			// Move the item down the heap until it is in the correct position.
 			while (j <= t)
 			{
 				//	Right(i) = Left(i) + 1
@@ -177,7 +184,7 @@ namespace IntegerIndexedPriorityQueue
 
 				HeapItem jVal = _heap[j];
 
-				if (_comparison(jVal.Priority, item.Priority) > 0)
+				if (_comparison(jVal.Priority, priority) > 0)
 					break;
 
 				_heap[i] = jVal;
@@ -220,6 +227,7 @@ namespace IntegerIndexedPriorityQueue
 
 				int i = 0, j = 1, t = _n - 1;
 
+				// Move the last item down the heap until it is in the correct position.
 				while (j <= t)
 				{
 					//	Right(i) = Left(i) + 1
@@ -253,7 +261,7 @@ namespace IntegerIndexedPriorityQueue
 		/// </summary>
 		/// <param name="Value">When this method returns, contains the heap item with the highest priority, or null if the priority queue is empty.</param>
 		/// <returns>True if a heap item was successfully retrieved; otherwise, false.	</returns>
-		public bool Peek(out HeapItem Value)
+		public bool Peek(out HeapItem? Value)
 		{
 			Value = default;
 			if (_n == 0)

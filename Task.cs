@@ -26,7 +26,10 @@
 				Name = name;
 			Priority = priority;
 		}
-
+		/// <summary>
+		/// Initializes a new instance of the Task class by copying another instance.
+		/// </summary>
+		/// <param name="other">The IndexedPriorityQueue instance to copy.</param>
 		public Task(Task other) : base(other.Priority)
 		{
 			Data = other.Data;
