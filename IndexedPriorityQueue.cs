@@ -1,7 +1,7 @@
 ﻿
 namespace IntegerIndexedPriorityQueue
 {
-	public class HeapItem
+	public class HeapNode
 	{
 		/// <summary>
 		/// Any ordinal typed object gets or sets the priority of the heap item (lower value = higher priority).
@@ -16,7 +16,7 @@ namespace IntegerIndexedPriorityQueue
 		/// Initializes a new instance of the HeapItem class.
 		/// </summary>
 		/// <param name="priority">Initial priority of this item</param>	
-		public HeapItem(object priority)
+		public HeapNode(object priority)
 		{
 			Priority = priority;
 			index = -1;
@@ -32,6 +32,10 @@ namespace IntegerIndexedPriorityQueue
 	internal class IndexedPriorityQueue
 	{
 		/// <summary>
+		/// default maximum capacity of an array of nodes
+		/// </summary>
+		const int defaultMaximumCapacity = 64;
+		/// <summary>
 		/// Current size of the heap.
 		/// </summary>
 		protected int _n;
@@ -42,7 +46,7 @@ namespace IntegerIndexedPriorityQueue
 		/// <summary>
 		/// Array to store the heap items.
 		/// </summary>
-		protected HeapItem[] _heap;
+		protected HeapNode[] _heap;
 		/// <summary>
 		/// Comparison function to determine the priority of heap items.
 		/// </summary>
@@ -61,12 +65,12 @@ namespace IntegerIndexedPriorityQueue
 		/// </summary>
 		/// <param name="comparison">Comparison function to determine the priority of heap items.</param>
 		/// <param name="max">Maximum size of the heap.</param>
-		public IndexedPriorityQueue(Comparison<object> comparison, int max = 64)
+		public IndexedPriorityQueue(Comparison<object> comparison, int max = defaultMaximumCapacity)
 		{
 			if (max <= 0)
-				max = 64;
+				max = defaultMaximumCapacity;
 			_max = max;
-			_heap = new HeapItem[_max];
+			_heap = new HeapNode[_max];
 			_comparison = comparison;
 		}
 
@@ -78,7 +82,7 @@ namespace IntegerIndexedPriorityQueue
 		{
 			_max = other._max;
 			_n = other._n;
-			_heap = new HeapItem[_max];
+			_heap = new HeapNode[_max];
 			Array.Copy(other._heap, _heap, _n);
 			_comparison = other._comparison;
 		}
@@ -102,7 +106,7 @@ namespace IntegerIndexedPriorityQueue
 		/// </summary>
 		/// <param name="i">The index of the heap item to get.</param>
 		/// <returns>The heap item at the specified index, or null if the index is out of range.</returns>
-		public HeapItem? this[int i]
+		public HeapNode? this[int i]
 		{
 			get
 			{
@@ -119,7 +123,7 @@ namespace IntegerIndexedPriorityQueue
 		/// <param name="item">The heap item to add.</param>
 		/// <param name="priority">The priority of the heap item.</param>
 		/// <returns>True if the item was added successfully; otherwise, false.</returns>
-		public bool Add(HeapItem item, object priority)
+		public bool Add(HeapNode item, object priority)
 		{
 			int i = item.index;
 
@@ -168,7 +172,7 @@ namespace IntegerIndexedPriorityQueue
 		/// <param name="item">The heap item whose priority is to be increased.</param>
 		/// <param name="priority">The new priority of the heap item.</param>
 		/// <returns>True if the priority was increased successfully; otherwise, false.</returns>
-		public bool IncreaseKey(HeapItem item, object priority)
+		public bool IncreaseKey(HeapNode item, object priority)
 		{
 			int i = item.index;             // index of the item in the heap array
 			int t = _n - 1;                 // index of the last item in the heap array
@@ -182,7 +186,7 @@ namespace IntegerIndexedPriorityQueue
 					if (_comparison(_heap[j].Priority, _heap[j + 1].Priority) > 0)
 						j++;
 
-				HeapItem jVal = _heap[j];
+				HeapNode jVal = _heap[j];
 
 				if (_comparison(jVal.Priority, priority) > 0)
 					break;
@@ -212,7 +216,7 @@ namespace IntegerIndexedPriorityQueue
 		/// </summary>
 		/// <param name="item">When this method returns, contains the heap item with the highest priority, or null if the priority queue is empty.</param>
 		/// <returns>True if a heap item was successfully retrieved and removed; otherwise, false.</returns>
-		public bool Get(out HeapItem? item)
+		public bool Get(out HeapNode? item)
 		{
 			item = default;
 			if (_n == 0)
@@ -223,7 +227,7 @@ namespace IntegerIndexedPriorityQueue
 
 			if (_n > 0)
 			{
-				HeapItem last = _heap[_n];
+				HeapNode last = _heap[_n];
 
 				int i = 0, j = 1, t = _n - 1;
 
@@ -235,7 +239,7 @@ namespace IntegerIndexedPriorityQueue
 						if (_comparison(_heap[j].Priority, _heap[j + 1].Priority) > 0)
 							j++;
 
-					HeapItem jVal = _heap[j];
+					HeapNode jVal = _heap[j];
 
 					if (_comparison(jVal.Priority, last.Priority) > 0)
 						break;
@@ -261,7 +265,7 @@ namespace IntegerIndexedPriorityQueue
 		/// </summary>
 		/// <param name="Value">When this method returns, contains the heap item with the highest priority, or null if the priority queue is empty.</param>
 		/// <returns>True if a heap item was successfully retrieved; otherwise, false.	</returns>
-		public bool Peek(out HeapItem? Value)
+		public bool Peek(out HeapNode? Value)
 		{
 			Value = default;
 			if (_n == 0)
@@ -274,17 +278,17 @@ namespace IntegerIndexedPriorityQueue
 		/// <summary>
 		/// Add Synonyms
 		/// </summary>
-		public bool Put(HeapItem item, object priority)
+		public bool Put(HeapNode item, object priority)
 		{
 			return Add(item, priority);
 		}
 
-		public bool Push(HeapItem item, object priority)
+		public bool Push(HeapNode item, object priority)
 		{
 			return Add(item, priority);
 		}
 
-		public bool Insert(HeapItem item, object priority)
+		public bool Insert(HeapNode item, object priority)
 		{
 			return Add(item, priority);
 		}
@@ -295,20 +299,20 @@ namespace IntegerIndexedPriorityQueue
 		/// the priority queue, depending on the comparison function.
 		/// </summary>
 
-		public bool Pop(out HeapItem? item)
+		public bool Pop(out HeapNode? item)
 		{
 			return Get(out item);
 		}
 
 		//public bool ExtractMax(out HeapItem Value)
-		public bool ExtractMin(out HeapItem? item)
+		public bool ExtractMin(out HeapNode? item)
 		{
 			return Get(out item);
 		}
 		/// <summary>
 		/// Peek Synonym
 		/// </summary>
-		public bool Top(out HeapItem? item)
+		public bool Top(out HeapNode? item)
 		{
 			item = default;
 			if (_n == 0)

@@ -81,7 +81,7 @@ namespace IntegerIndexedPriorityQueue
 			ShowString("\nAI performs tasks in the following order:");
 			while (clone.Count > 0)
 			{
-				clone.Pop(out HeapItem currentTask);
+				clone.Pop(out HeapNode currentTask);
 				ShowString($"- In progress: {currentTask}");
 			}
 		}
